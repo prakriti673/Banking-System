@@ -32,11 +32,11 @@ class CreateAccountAPIView(APIView):
     def post(self,request):
         """
         {
-            "full_name": "John Doe",
-            "address": "123 Main St",
-            "open_date": "2024-01-01"
+            "full_name": "Robert Patrick",
+            "address": "4/1 Kings Road,Jersey",
+            "open_date": "2023-12-02",
             "account_type": "savings",
-            "bank": 1,
+            "bank": 3,
         }
         """
         client = Client.objects.create(
@@ -54,6 +54,39 @@ class CreateAccountAPIView(APIView):
         serializer = AccountSerializer(account)
         return Response(serializer.data,status=status.HTTP_201_CREATED)
 
+# details about a particular bank a/c
+class AccountDetailsAPIView(generics.RetrieveAPIView):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
+
 class AccountListAPIView(generics.ListAPIView):
-    queryset=Account.objects.all()
-    serializer_class=AccountSerializer
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
+
+class DepositAPIView(generics.ListCreateAPIView):
+    """
+    Create a new deposit
+    {
+        "account": 1,
+        "amount": 200
+    }
+    """
+    queryset = Deposit.objects.all()
+    serializer_class = DepositSerializer
+
+class WithdrawAPIView(generics.ListCreateAPIView):
+    """
+    Create a new withdrawal
+    {
+        "account": 1,
+        "amount": 200
+    }
+    """
+    queryset = Withdraw.objects.all()
+    serializer_class = WithdrawSerializer
+    
+class TransferAPIView(generics.ListCreateAPIView):
+    
+    queryset = Transfer.objects.all()
+    serializer_class = TransferSerializer
+    
