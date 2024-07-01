@@ -16,8 +16,8 @@ class Branch(models.Model):
     #         "branch_code":self.branch_code
     #     }
     
-    # def __str__(self):
-    #     return self.name
+    def __str__(self):
+        return self.name
 
 class Bank(models.Model):
     name = models.CharField(max_length=250)
@@ -30,14 +30,14 @@ class Bank(models.Model):
     #         "branch": self.branch
     #     }
 
-    # def __str__(self):
-        # return self.name 
+    def __str__(self):
+        return self.name 
 
 class ClientManager(models.Model):
     name = models.CharField(max_length=250)
 
-    # def __str__(self):
-    #     return self.name
+    def __str__(self):
+        return self.name
 
 
 class Client(models.Model):
@@ -50,8 +50,8 @@ class Client(models.Model):
     #         "address":self.address
     #     }
 
-    # def __str_(self):
-    #     return self.name
+    def __str_(self):
+        return self.name
 
 
 
@@ -70,8 +70,8 @@ class Account(models.Model):
 
     #     }
 
-    # def __str__(self):
-    #     return self.account_type
+    def __str__(self):
+        return self.account_type
 
 
 class Transfer(models.Model):
@@ -84,8 +84,8 @@ class Transfer(models.Model):
     #         "branch":self.branch
     #     }
 
-    # def __str__(self):
-    #     return "Account Transfered to {} Branch".format(self.branch.name)
+    def __str__(self):
+        return "Account Transfered to {} Branch".format(self.branch.name)
 
 
 class Withdraw(models.Model):
@@ -96,6 +96,8 @@ class Withdraw(models.Model):
 class Deposit(models.Model):
     amount = models.FloatField()
     account = models.ForeignKey(Account,on_delete=models.CASCADE)
+
+
 
 
 
