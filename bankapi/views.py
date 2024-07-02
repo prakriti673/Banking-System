@@ -32,11 +32,12 @@ class CreateAccountAPIView(APIView):
     def post(self,request):
         """
         {
-            "full_name": "Robert Patrick",
-            "address": "4/1 Kings Road,Jersey",
-            "open_date": "2023-12-02",
+            "full_name": "Joshua",
+            "address": "San Deigo",
+            "open_date": "2021-07-14",
             "account_type": "savings",
-            "bank": 3,
+            "bank": 2,
+            "aadhar number": "1416253487659832"
         }
         """
         client = Client.objects.create(
@@ -50,14 +51,16 @@ class CreateAccountAPIView(APIView):
             open_date=request.data['open_date'],
             account_type=request.data['account_type'],
             bank = bank,
+            account_no=request.data['aadhar number'],
         )
+
         serializer = AccountSerializer(account)
         return Response(serializer.data,status=status.HTTP_201_CREATED)
 
 # details about a particular bank a/c
 class AccountDetailsAPIView(generics.RetrieveAPIView):
     queryset = Account.objects.all()
-    serializer_class = AccountSerializer
+    serializer_class = AccountDetailSerializer
 
 class AccountListAPIView(generics.ListAPIView):
     queryset = Account.objects.all()

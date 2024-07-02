@@ -24,20 +24,19 @@ class ClientSerializer(serializers.ModelSerializer):
 class AccountSerializer(serializers.ModelSerializer):
     client = ClientSerializer()
     bank = BankSerializer()
-
     class Meta:
         model = Account
         fields = ('__all__')
 
 
 class AccountDetailSerializer(serializers.ModelSerializer):
-    balance = serializers.DecimalField(max_digits=12, decimal_places=2)
+    balance = serializers.DecimalField(max_digits=12,decimal_places=2)
     client = ClientSerializer()
     bank = BankSerializer()
 
     class Meta:
         model = Account
-        fields = ['client','bank','balance','open_date','account_type']
+        fields = ['client','bank','balance','open_date','account_type','account_no']
 
 
 

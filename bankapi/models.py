@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 # Create your models here.
 class Branch(models.Model):
@@ -38,17 +40,23 @@ class Account(models.Model):
     open_date = models.CharField(max_length=250)
     account_type = models.CharField(max_length=250)
     bank = models.ForeignKey(Bank,on_delete=models.CASCADE)
+    account_no = models.CharField(max_length=16, unique=True, editable=False, validators=[
+        MinLengthValidator(16),
+        MaxLengthValidator(16)
+    ])
     
+    def clean(self):
+        super().clean()
+        if len(self.account_no) != 16:
+            raise ValidationError("Account number must be exactly 16 characters long.")
+
+    @property
     def balance(self):
-        deposits=sum(deposit.amount for deposit in Deposit.objects.filter(account=self.id))
-        withdrawals=sum(withdrawal.amount for withdrawal in Withdraw.objects.filter(account=self.id))
-        total=deposits-withdrawals
-        return total
+        deposits = sum(deposit.amount for deposit in Deposit.objects.filter(account=self.id))
+        withdrawals = sum(withdrawal.amount for withdrawal in Withdraw.objects.filter(account=self.id))
+        return deposits - withdrawals
 
-    def __str__(self):
-        return self.open_date
-
-
+    
 class Transfer(models.Model):
     account = models.ForeignKey(Account,on_delete=models.CASCADE)
     branch = models.ForeignKey(Branch,on_delete=models.CASCADE)
