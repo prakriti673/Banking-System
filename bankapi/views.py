@@ -93,3 +93,22 @@ class TransferAPIView(generics.ListCreateAPIView):
     queryset = Transfer.objects.all()
     serializer_class = TransferSerializer
     
+
+class ClientListAPIView(generics.ListAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+
+class ClientDetailAPIView(generics.RetrieveAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+
+class ClientManagerDetailAPIView(generics.RetrieveAPIView):
+    queryset = ClientManager.objects.all()
+    serializer_class = ClientManagerSerializer
+
+class ClientManagerListAPIView(generics.ListAPIView):
+    queryset = ClientManager.objects.all()
+    serializer_class = ClientManagerSerializer
+

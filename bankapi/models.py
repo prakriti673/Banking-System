@@ -23,7 +23,8 @@ class Bank(models.Model):
 
 class ClientManager(models.Model):
     name = models.CharField(max_length=250)
-
+    bank = models.ForeignKey(Bank,models.CASCADE)
+    
     def __str__(self):
         return self.name
 
@@ -31,9 +32,15 @@ class ClientManager(models.Model):
 class Client(models.Model):
     name = models.CharField(max_length=250)
     address = models.CharField(max_length=250)
+    phone = models.IntegerField(unique = True,validators=[
+        MinLengthValidator(10),
+        MaxLengthValidator(10)
+    ])
+    manager=models.ForeignKey(ClientManager,on_delete=models.CASCADE)
 
     def __str_(self):
         return self.name
+
 
 class Account(models.Model):
     client=models.ForeignKey(Client,on_delete=models.CASCADE)
@@ -56,24 +63,30 @@ class Account(models.Model):
         withdrawals = sum(withdrawal.amount for withdrawal in Withdraw.objects.filter(account=self.id))
         return deposits - withdrawals
 
-    
-class Transfer(models.Model):
-    account = models.ForeignKey(Account,on_delete=models.CASCADE)
-    branch = models.ForeignKey(Branch,on_delete=models.CASCADE)
-
-    def __str__(self):
-        return "Account Transfered to {} Branch".format(self.branch.name)
 
 class Withdraw(models.Model):
     amount = models.FloatField()
     account = models.ForeignKey(Account,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "{} withdrawed from the account no. {}".format(self.amount, self.account)
 
 
 class Deposit(models.Model):
     amount = models.FloatField()
     account = models.ForeignKey(Account,on_delete=models.CASCADE)
 
+    def __str__(self):
+        return "{} deposited in the account no. {}".format(self.amount, self.account)
 
+class Transfer(models.Model):
+    account = models.ForeignKey(Account,on_delete=models.CASCADE)
+    branch = models.ForeignKey(Branch,on_delete=models.CASCADE)
+    account.branch = branch
+    
+    def __str__(self):
+        return "Account Transfered to {} Branch".format(self.branch.name)
+    
 
 
 
